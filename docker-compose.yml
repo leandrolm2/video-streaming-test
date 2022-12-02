@@ -1,0 +1,11 @@
+services:
+  postgres:
+    container_name: postgres_sip_escalas_local
+    image: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      PGDATA: /data/postgres
+    ports:
+      - '5432:5432'
+    restart: unless-stopped
