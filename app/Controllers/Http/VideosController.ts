@@ -1,7 +1,5 @@
-import { Request } from '@adonisjs/core/build/standalone'
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import { schema, rules } from '@ioc:Adonis/Core/Validator'
-import User from 'App/Models/User'
 import Video from 'App/Models/Video'
 
 export default class VideosController {
@@ -45,6 +43,47 @@ export default class VideosController {
         }catch(err){
             console.error(err)
             return response.status(400).send({error: 'no video find'}) 
+        }
+    }
+
+    public async update({response, params, request}: HttpContextContract) {
+        const { id } = params
+
+        try{
+            const UpdateValidator = schema.create({
+                title: schema.string.optional(),
+                description: schema.string.optional(),
+                url: schema.string.optional()
+            })
+            const newVideo = await request.validate({ schema: UpdateValidator })
+            const video = await Video.query().where('id', id)
+            await video[0].merge(newVideo).save()
+
+            return response.status(200).send({
+                title: video[0].title, 
+                description: video[0].description,
+                url: video[0].url
+            })
+        }catch(err){
+            console.error(err)
+            return response.status(400).send({error: 'no video found'}) 
+        }
+    }
+
+    public async delete({response, params, request}: HttpContextContract) {
+        const { id } = params
+
+        try{
+            const video = await Video.findOrFail(id);
+            await video.delete();
+
+            return response.status(200).send({
+                deleted: video.$isDeleted, 
+                message: `video from ${video.id} was deleted`
+            })
+        }catch(err){
+            console.error(err)
+            return response.status(400).send({error: 'somenthing went wrong'}) 
         }
     }
 }

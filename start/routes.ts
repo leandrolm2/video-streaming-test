@@ -28,6 +28,8 @@ Route.group(() => {
     Route.post('/videos', 'VideosController.create')
     Route.get('/videos', 'VideosController.index')
     Route.get('/videos/:id', 'VideosController.search')
+    Route.put('/videos/:id', 'VideosController.update')
+    Route.delete('/videos/:id', 'VideosController.delete')
 
 }).middleware(['auth'])
 
