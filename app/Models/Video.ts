@@ -8,7 +8,16 @@ export default class Video extends BaseModel {
   public id: number
 
   @column()
-  public name: string
+  public tagId: number
+
+  @column()
+  public userId: number
+
+  @column()
+  public title: string
+
+  @column()
+  public url: string
 
   @column()
   public description: string

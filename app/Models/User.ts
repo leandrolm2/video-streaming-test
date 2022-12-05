@@ -1,6 +1,8 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column, hasMany, HasMany } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, beforeSave, column, hasMany, HasMany } from '@ioc:Adonis/Lucid/Orm'
 import Video from './Video'
+import Hash from '@ioc:Adonis/Core/Hash'
+import Tag from './Tag'
 
 export default class User extends BaseModel {
   @column({ isPrimary: true })
@@ -15,11 +17,11 @@ export default class User extends BaseModel {
   @column()
   public password: string
 
-  @column()
-  public url: string
-
   @hasMany(() => Video)
   public videos: HasMany<typeof Video>
+
+  @hasMany(() => Tag)
+  public tags: HasMany<typeof Tag>
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime

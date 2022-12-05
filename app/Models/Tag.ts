@@ -9,6 +9,9 @@ export default class Tag extends BaseModel {
   @column()
   public title: string
 
+  @column()
+  public userId: number
+
   @hasMany(() => Video)
   public videos: HasMany<typeof Video>
 

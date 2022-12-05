@@ -20,6 +20,14 @@
 
 import Route from '@ioc:Adonis/Core/Route'
 
-Route.get('/', async () => {
-  return { hello: 'world' }
-})
+Route.post('/users', 'UsersController.register');
+Route.post('/login', 'UsersController.login');
+
+//videos
+Route.group(() => {
+    Route.post('/videos', 'VideosController.create')
+    Route.get('/videos', 'VideosController.index')
+    Route.get('/videos/:id', 'VideosController.search')
+
+}).middleware(['auth'])
+
