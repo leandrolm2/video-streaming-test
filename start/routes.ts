@@ -33,3 +33,10 @@ Route.group(() => {
 
 }).middleware(['auth'])
 
+//tags
+Route.group(() => {
+    Route.get('/tags', 'TagsController.index')
+    Route.get('/tags/:title_tag/videos', 'TagsController.search')
+    Route.post('/tags', 'TagsController.create')
+    
+}).middleware(['auth'])

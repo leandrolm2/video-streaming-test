@@ -14,10 +14,10 @@ export default class VideosController {
             const userVideo = await request.validate({ schema: RegisterValidator })
             const userPayloader = await Video.create({userId: user!.id, title: userVideo.title, url: userVideo.url, description: userVideo.description })
 
-            return response.status(200).send(userPayloader)
+            return response.status(200).send(userPayloader);
         }catch(err){
-            console.error(err)
-            return response.status(400).send({message: 'somenthign went wrong!'})
+            console.error(err);
+            return response.status(400).send({message: 'somenthign went wrong!'});
         }
     }
 
@@ -70,7 +70,7 @@ export default class VideosController {
         }
     }
 
-    public async delete({response, params, request}: HttpContextContract) {
+    public async delete({response, params}: HttpContextContract) {
         const { id } = params
 
         try{

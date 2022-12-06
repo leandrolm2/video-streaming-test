@@ -11,6 +11,7 @@ export default class extends BaseSchema {
       table.string('title').notNullable()
       table.string('description')
       table.string('url')
+      table.string('slug')
 
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL

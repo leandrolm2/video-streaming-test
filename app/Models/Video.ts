@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon'
-import { BaseModel, BelongsTo, belongsTo, column } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, beforeCreate, beforeUpdate, BelongsTo, belongsTo, column } from '@ioc:Adonis/Lucid/Orm'
 import User from './User'
 import Tag from './Tag'
 
@@ -21,6 +21,19 @@ export default class Video extends BaseModel {
 
   @column()
   public description: string
+
+  @column()
+  public slug: string
+
+  @beforeCreate()
+  private static slugMethodCreate(tag:Tag) {
+    tag.slug = tag.title.replace(/[^a-zA-Z-s]/g, "").toLowerCase();
+  }
+
+  @beforeUpdate()
+  private static slugMethodUpdate(tag:Tag) {
+    tag.slug = tag.title.replace(/[^a-zA-Z-s]/g, "").toLowerCase();
+  }
 
   @belongsTo(() => User)
   public user: BelongsTo<typeof User>

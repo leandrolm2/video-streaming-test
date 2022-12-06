@@ -15,6 +15,7 @@ test.group('Videos', (group) => {
     const response = await client.post('videos').json(video).loginAs(user);
 
     response.assertStatus(200);
+    response.hasBody();
   })
 
   test('get all videos', async ({client}) => {
@@ -24,6 +25,7 @@ test.group('Videos', (group) => {
     
     const response = await client.get('videos').loginAs(user);
     response.assertStatus(200);
+    response.hasBody();
   })
 
   test('get videos by id', async ({client}) => {
@@ -33,6 +35,7 @@ test.group('Videos', (group) => {
     const response = await client.get(`videos/${video.videos[0].id}`).loginAs(userPayloader);
 
     response.assertStatus(200);
+    response.hasBody();
     response.assertBody({
       title: video.videos[0].title, 
       description: video.videos[0].description,
@@ -52,6 +55,7 @@ test.group('Videos', (group) => {
     }).loginAs(userPayloader);
 
     response.assertStatus(200);
+    response.hasBody();
     response.assertBody({
       title: videoToUpdate.title, 
       description: videoToUpdate.description,
@@ -66,6 +70,7 @@ test.group('Videos', (group) => {
     const response = await client.delete(`videos/${video.videos[0].id}`).loginAs(userPayloader);
 
     response.assertStatus(200)
+    response.hasBody();
     response.assertBody({deleted: true, message: `video from ${video.videos[0].id} was deleted`})
   })
 })
