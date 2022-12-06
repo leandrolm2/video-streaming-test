@@ -8,11 +8,12 @@ export default class VideosController {
             const RegisterValidator = schema.create({
                 title: schema.string({}),
                 description: schema.string({}, [rules.minLength(8)]),
-                url: schema.string({})
+                url: schema.string({}),
+                tag_id: schema.number() 
             })
             const user = auth.user
             const userVideo = await request.validate({ schema: RegisterValidator })
-            const userPayloader = await Video.create({userId: user!.id, title: userVideo.title, url: userVideo.url, description: userVideo.description })
+            const userPayloader = await Video.create({userId: user!.id, title: userVideo.title, url: userVideo.url, description: userVideo.description, tagId: userVideo.tag_id})
 
             return response.status(200).send(userPayloader);
         }catch(err){

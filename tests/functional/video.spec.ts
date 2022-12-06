@@ -1,4 +1,3 @@
-import { FakeDrive } from '@adonisjs/core/build/standalone';
 import Database from '@ioc:Adonis/Lucid/Database'
 import { test } from '@japa/runner'
 import { tagsFacotry, UserFactory, videosFacotry } from 'Database/factories'
@@ -10,8 +9,13 @@ test.group('Videos', (group) => {
   });
 
   test('post videos', async ({client}) => {
-    const user = await UserFactory.create();
-    const video  = await videosFacotry.make();
+    const user = await UserFactory.with('tags', 1).create();
+    const video = {
+      title: 'some title',
+      description: 'this is a description',
+      url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+      tag_id: user.tags[0].id 
+    }
     const response = await client.post('videos').json(video).loginAs(user);
 
     response.assertStatus(200);
