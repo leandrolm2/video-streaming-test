@@ -50,4 +50,15 @@ test.group('Tag', (group) => {
     response.assertStatus(200);
     response.hasBody();
   })
+
+  test('delete tag', async ({client}) => {
+    const userPayloader = await UserFactory.create();
+    const tag = await tagsFacotry.merge({userId: userPayloader.id}).create();
+
+    const response = await client.delete(`tags/${tag.id}`).loginAs(userPayloader);
+
+    response.assertStatus(200)
+    response.hasBody();
+    response.assertBody({deleted: true, message: `tag from ${tag.id} was deleted`})
+  })
 })

@@ -58,4 +58,21 @@ export default class TagsController {
             return response.status(400).send({error:true, message:'something went wrong'})
         }
     }
+
+    public async delete({response, params}: HttpContextContract) {
+        const { id } = params
+
+        try{
+            const tag = await Tag.findOrFail(id);
+            await tag.delete();
+
+            return response.status(200).send({
+                deleted: tag.$isDeleted, 
+                message: `tag from ${tag.id} was deleted`
+            })
+        }catch(err){
+            console.error(err)
+            return response.status(400).send({error: 'somenthing went wrong'}) 
+        }
+    }
 }
