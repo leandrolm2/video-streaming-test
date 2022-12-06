@@ -1,5 +1,6 @@
 import Database from '@ioc:Adonis/Lucid/Database';
 import { test } from '@japa/runner'
+import Tag from 'App/Models/Tag';
 import { tagsFacotry, UserFactory } from 'Database/factories';
 
 test.group('Tag', (group) => {
@@ -32,8 +33,19 @@ test.group('Tag', (group) => {
   test('create tag', async ({client}) => {
     const userPayloader = await UserFactory.create();
     const tag = await tagsFacotry.make();
-
+    
     const response = await client.post(`tags`).json(tag).loginAs(userPayloader);
+
+    response.assertStatus(200);
+    response.hasBody();
+  })
+
+  test('update tag', async ({client}) => {
+    const userPayloader = await UserFactory.create();
+    const tag = await tagsFacotry.merge({userId: userPayloader.id}).create();
+    const tagToUpdate = await tagsFacotry.make();
+
+    const response = await client.put(`tags/${tag.id}`).json(tagToUpdate).loginAs(userPayloader);
 
     response.assertStatus(200);
     response.hasBody();

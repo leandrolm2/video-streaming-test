@@ -38,5 +38,7 @@ Route.group(() => {
     Route.get('/tags', 'TagsController.index')
     Route.get('/tags/:title_tag/videos', 'TagsController.search')
     Route.post('/tags', 'TagsController.create')
+    Route.put('/tags/:id', 'TagsController.update')
+    Route.delete('/tags/:id', 'TagsController.delete')
     
 }).middleware(['auth'])

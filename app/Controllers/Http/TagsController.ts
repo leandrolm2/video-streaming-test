@@ -32,11 +32,27 @@ export default class TagsController {
         const {title} = request.body()
         
         if (title.lenght > 360) return response.status(403).send({error: true, message: 'title too long'})
-        
+
         try{
             const tags = await Tag.create({title:title, userId: auth!.user!.id})
 
             return response.status(200).send(tags)
+        }catch(err) {
+            console.error(err)
+            return response.status(400).send({error:true, message:'something went wrong'})
+        }
+    }
+
+    public async update({response, request, params}:HttpContextContract) {
+        const updateTag = request.body()
+        const tagId = params
+        if (updateTag.title.lenght > 360) return response.status(403).send({error: true, message: 'title too long'})
+        
+        try{
+            const tag = await Tag.findOrFail(tagId.id);
+            await tag.merge({title: updateTag.title}).save()
+
+            return response.status(200).send(tag)
         }catch(err) {
             console.error(err)
             return response.status(400).send({error:true, message:'something went wrong'})
