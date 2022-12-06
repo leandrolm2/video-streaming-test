@@ -34,9 +34,8 @@ yarn seed
 - Implement APIs using Controllers, Factories, Models, Migrations, Middlewares, Validators
 
 ## Methodology 📚
-- AdonisJS 5
-- Typescript
-- Postgres
+- TDD
+- REST
 
 ## Contributing
 
