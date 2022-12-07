@@ -1,6 +1,5 @@
 import Database from '@ioc:Adonis/Lucid/Database';
 import { test } from '@japa/runner'
-import Tag from 'App/Models/Tag';
 import { tagsFacotry, UserFactory } from 'Database/factories';
 
 test.group('Tag', (group) => {
@@ -36,7 +35,7 @@ test.group('Tag', (group) => {
     
     const response = await client.post(`tags`).json(tag).loginAs(userPayloader);
 
-    response.assertStatus(200);
+    response.assertStatus(201);
     response.hasBody();
   })
 
@@ -56,9 +55,9 @@ test.group('Tag', (group) => {
     const tag = await tagsFacotry.merge({userId: userPayloader.id}).create();
 
     const response = await client.delete(`tags/${tag.id}`).loginAs(userPayloader);
-
+    
     response.assertStatus(200)
     response.hasBody();
-    response.assertBody({deleted: true, message: `tag from ${tag.id} was deleted`})
+    response.assertBody({deleted: true, message: `tag from id ${tag.id} was deleted`})
   })
 })

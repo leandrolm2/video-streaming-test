@@ -10,11 +10,11 @@ export default class TagsController {
             return response.status(200).send(tags)
         }catch(err) {
             console.error(err)
-            return response.status(400).send({error:true, message:'something went wrong'})
+            return response.status(500).send({error:true, message:'something went wrong'})
         }
     }
 
-    public async search({params, response}:HttpContextContract) {
+    public async show({params, response}:HttpContextContract) {
         const { title_tag } = params;
         const title = title_tag.replace(/[^a-zA-Z-s]/g, "").toLowerCase();
         try{
@@ -24,11 +24,11 @@ export default class TagsController {
             return response.status(200).send(videosFromTag[0].videos);
         }catch(err){
             console.error(err)
-            return response.status(400).send({error:true, message:'something went wrong'})
+            return response.status(500).send({error:true, message:'something went wrong'})
         }
     }
 
-    public async create({response, request, auth}:HttpContextContract) {
+    public async store({response, request, auth}:HttpContextContract) {
         const {title} = request.body()
         
         if (title.lenght > 360) return response.status(403).send({error: true, message: 'title too long'})
@@ -36,10 +36,10 @@ export default class TagsController {
         try{
             const tags = await Tag.create({title:title, userId: auth!.user!.id})
 
-            return response.status(200).send(tags)
+            return response.status(201).send(tags)
         }catch(err) {
             console.error(err)
-            return response.status(400).send({error:true, message:'something went wrong'})
+            return response.status(500).send({error:true, message:'something went wrong'})
         }
     }
 
@@ -55,11 +55,11 @@ export default class TagsController {
             return response.status(200).send(tag)
         }catch(err) {
             console.error(err)
-            return response.status(400).send({error:true, message:'something went wrong'})
+            return response.status(500).send({error:true, message:'something went wrong'})
         }
     }
 
-    public async delete({response, params}: HttpContextContract) {
+    public async destroy({response, params}: HttpContextContract) {
         const { id } = params
 
         try{
@@ -68,11 +68,11 @@ export default class TagsController {
 
             return response.status(200).send({
                 deleted: tag.$isDeleted, 
-                message: `tag from ${tag.id} was deleted`
+                message: `tag from id ${tag.id} was deleted`
             })
         }catch(err){
             console.error(err)
-            return response.status(400).send({error: 'somenthing went wrong'}) 
+            return response.status(500).send({error: 'somenthing went wrong'}) 
         }
     }
 }

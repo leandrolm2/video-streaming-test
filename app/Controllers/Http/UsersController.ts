@@ -2,7 +2,7 @@ import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import { schema, rules } from '@ioc:Adonis/Core/Validator'
 import User from 'App/Models/User'
 export default class UsersController {
-    public async register({request, response}:HttpContextContract) {
+    public async store({request, response}:HttpContextContract) {
         try{
             const RegisterValidator = schema.create({
                 email: schema.string({}),
@@ -19,7 +19,7 @@ export default class UsersController {
             })
         }catch(err){
             console.error(err)
-            return response.status(400).send({message: 'somenthign went wrong!'})
+            return response.status(500).send({message: 'somenthign went wrong!'})
         }
     }
 

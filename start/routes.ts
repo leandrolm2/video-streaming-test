@@ -20,25 +20,26 @@
 
 import Route from '@ioc:Adonis/Core/Route'
 
-Route.post('/users', 'UsersController.register');
+//user
+Route.post('/users', 'UsersController.store');
 Route.post('/login', 'UsersController.login');
 
 //videos
 Route.group(() => {
-    Route.post('/videos', 'VideosController.create')
+    Route.post('/videos', 'VideosController.store')
     Route.get('/videos', 'VideosController.index')
-    Route.get('/videos/:id', 'VideosController.search')
+    Route.get('/videos/:id', 'VideosController.show')
     Route.put('/videos/:id', 'VideosController.update')
-    Route.delete('/videos/:id', 'VideosController.delete')
+    Route.delete('/videos/:id', 'VideosController.destroy')
 
 }).middleware(['auth'])
 
 //tags
 Route.group(() => {
     Route.get('/tags', 'TagsController.index')
-    Route.get('/tags/:title_tag/videos', 'TagsController.search')
-    Route.post('/tags', 'TagsController.create')
+    Route.get('/tags/:title_tag/videos', 'TagsController.show')
+    Route.post('/tags', 'TagsController.store')
     Route.put('/tags/:id', 'TagsController.update')
-    Route.delete('/tags/:id', 'TagsController.delete')
+    Route.delete('/tags/:id', 'TagsController.destroy')
     
 }).middleware(['auth'])

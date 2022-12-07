@@ -18,7 +18,7 @@ test.group('Videos', (group) => {
     }
     const response = await client.post('videos').json(video).loginAs(user);
 
-    response.assertStatus(200);
+    response.assertStatus(201);
     response.hasBody();
   })
 
@@ -75,6 +75,6 @@ test.group('Videos', (group) => {
 
     response.assertStatus(200)
     response.hasBody();
-    response.assertBody({deleted: true, message: `video from ${video.videos[0].id} was deleted`})
+    response.assertBody({deleted: true, message: `video from id ${video.videos[0].id} was deleted`})
   })
 })

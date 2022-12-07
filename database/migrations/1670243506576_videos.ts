@@ -8,10 +8,10 @@ export default class extends BaseSchema {
       table.increments('id')
       table.integer('user_id').unsigned().references('users.id').onDelete('CASCADE')
       table.integer('tag_id').unsigned().references('tags.id').onDelete('CASCADE')
-      table.string('title').notNullable()
-      table.string('description')
+      table.string('title', 360).notNullable()
+      table.text('description')
       table.string('url')
-      table.string('slug')
+      table.string('slug', 360)
 
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL

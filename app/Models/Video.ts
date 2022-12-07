@@ -26,12 +26,12 @@ export default class Video extends BaseModel {
   public slug: string
 
   @beforeCreate()
-  private static async slugMethodCreate(tag:Tag) {
+  public static async slugMethodCreate(tag:Tag) {
     tag.slug = tag.title.replace(/[^a-zA-Z-s]/g, "").toLowerCase();
   }
 
   @beforeUpdate()
-  private static async slugMethodUpdate(tag:Tag) {
+  public static async slugMethodUpdate(tag:Tag) {
     tag.slug = tag.title.replace(/[^a-zA-Z-s]/g, "").toLowerCase();
   }
 

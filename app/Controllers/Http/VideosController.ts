@@ -1,24 +1,26 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import { schema, rules } from '@ioc:Adonis/Core/Validator'
 import Video from 'App/Models/Video'
+import VideoSchemaValidator from 'App/Validators/Videos/StoreSchemaValidator'
+import UpdateVideoSchemaValidator from 'App/Validators/Videos/UpdateSchemaValidator'
 
 export default class VideosController {
-    public async create({request, response, auth}: HttpContextContract) {
+    public async store({request, response, auth}: HttpContextContract) {
+        const body = await request.validate(VideoSchemaValidator)
+        
         try{
-            const RegisterValidator = schema.create({
-                title: schema.string({}),
-                description: schema.string({}, [rules.minLength(8)]),
-                url: schema.string({}),
-                tag_id: schema.number() 
+            const user = auth.user;
+            const userPayloader = await Video.create({
+                userId: user!.id, 
+                title: body.title, 
+                url: body.url, 
+                description: body.description, 
+                tagId: body.tag_id
             })
-            const user = auth.user
-            const userVideo = await request.validate({ schema: RegisterValidator })
-            const userPayloader = await Video.create({userId: user!.id, title: userVideo.title, url: userVideo.url, description: userVideo.description, tagId: userVideo.tag_id})
 
-            return response.status(200).send(userPayloader);
+            return response.status(201).send(userPayloader);
         }catch(err){
             console.error(err);
-            return response.status(400).send({message: 'somenthign went wrong!'});
+            return response.status(500).send({message: 'somenthign went wrong!'});
         }
     }
 
@@ -28,11 +30,11 @@ export default class VideosController {
             return response.status(200).send(videos)
         }catch(err){
             console.error(err)
-            return response.status(400).send({error: 'no video find'}) 
+            return response.status(500).send({error: 'something went wrong'}) 
         }
     }
 
-    public async search({response, params}: HttpContextContract) {
+    public async show({response, params}: HttpContextContract) {
         const { id } = params
         try{
             const video = await Video.findOrFail(id)
@@ -43,20 +45,15 @@ export default class VideosController {
             })
         }catch(err){
             console.error(err)
-            return response.status(400).send({error: 'no video find'}) 
+            return response.status(500).send({error: 'something went wrong'}) 
         }
     }
 
     public async update({response, params, request}: HttpContextContract) {
         const { id } = params
 
+        const newVideo = await request.validate(UpdateVideoSchemaValidator)
         try{
-            const UpdateValidator = schema.create({
-                title: schema.string.optional(),
-                description: schema.string.optional(),
-                url: schema.string.optional()
-            })
-            const newVideo = await request.validate({ schema: UpdateValidator })
             const video = await Video.query().where('id', id)
             await video[0].merge(newVideo).save()
 
@@ -67,11 +64,11 @@ export default class VideosController {
             })
         }catch(err){
             console.error(err)
-            return response.status(400).send({error: 'no video found'}) 
+            return response.status(500).send({error: 'something went wrong'}) 
         }
     }
 
-    public async delete({response, params}: HttpContextContract) {
+    public async destroy({response, params}: HttpContextContract) {
         const { id } = params
 
         try{
@@ -80,11 +77,11 @@ export default class VideosController {
 
             return response.status(200).send({
                 deleted: video.$isDeleted, 
-                message: `video from ${video.id} was deleted`
+                message: `video from id ${id} was deleted`
             })
         }catch(err){
             console.error(err)
-            return response.status(400).send({error: 'somenthing went wrong'}) 
+            return response.status(500).send({error: 'somenthing went wrong'}) 
         }
     }
 }

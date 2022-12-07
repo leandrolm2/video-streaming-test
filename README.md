@@ -1,39 +1,45 @@
 # Video Streaming Plataform
 
-This is a project to simulate a video plataform streaming, 
+This is a project to simulate a video plataform streaming,
 
 ## Installation
 
 Use the 'yarn' to start the project
 
 run
+
 ```bash
 yarn
 ```
 
 ## Usage
+
 to run test from project use de command in terminal
+
 ```bash
 node ace test
 ```
-to populate the database use the command in termianl:
+
+to start the project you need to use the command 'yarn dev' in termianl, like this:
 
 ```bash
-yarn seed
+yarn dev
 ```
 
 ## Tech involved 💾
+
 - AdonisJS 5
 - Typescript
 - Postgres
- 
 
 ## Objectives of this project 🦾
+
 - Authentication and Authorization with API tokens and Bouncer
 - Make queries and Relationships with Lucid ORM and Query Builders
 - Implement APIs using Controllers, Factories, Models, Migrations, Middlewares, Validators
 
 ## Methodology 📚
+
 - TDD
 - REST
 
