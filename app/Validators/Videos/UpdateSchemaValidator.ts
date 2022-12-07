@@ -9,7 +9,7 @@ export default class UpdateVideoSchemaValidator {
     description: schema.string.optional([rules.minLength(4)]),
   })
   public messages: CustomMessages = {
-    '*': (field, rule, options) => {
+    '*': (field, rule) => {
       return `${rule} validation error on ${field}`
     }
   }

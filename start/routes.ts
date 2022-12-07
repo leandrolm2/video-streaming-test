@@ -41,5 +41,4 @@ Route.group(() => {
     Route.post('/tags', 'TagsController.store')
     Route.put('/tags/:id', 'TagsController.update')
     Route.delete('/tags/:id', 'TagsController.destroy')
-    
 }).middleware(['auth'])
