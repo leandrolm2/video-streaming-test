@@ -14,13 +14,13 @@ yarn
 
 ## Usage
 
-to run test from project use de command in terminal
+To run the unit test you must use the command below in your terminal
 
 ```bash
 node ace test
 ```
 
-to start the project you need to use the command 'yarn dev' in termianl, like this:
+As for starting the project the command you should use is 'yarn dev' in the terminal, like this:
 
 ```bash
 yarn dev
