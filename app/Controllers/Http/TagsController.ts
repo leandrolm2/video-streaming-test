@@ -2,77 +2,81 @@ import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Tag from 'App/Models/Tag'
 
 export default class TagsController {
-    public async index({response}:HttpContextContract) {
-        try{
-            const tags = await Tag.all()
-            if(tags.length < 0) return response.send('There is no tag register on database');
+  public async index({ response }: HttpContextContract) {
+    try {
+      const tags = await Tag.all()
+      if (tags.length < 0) return response.send('There is no tag register on database')
 
-            return response.status(200).send(tags)
-        }catch(err) {
-            console.error(err)
-            return response.status(500).send({error:true, message:'something went wrong'})
-        }
+      return response.status(200).send(tags)
+    } catch (err) {
+      console.error(err)
+      return response.status(500).send({ error: true, message: 'something went wrong' })
     }
+  }
 
-    public async show({params, response}:HttpContextContract) {
-        const { title_tag } = params;
-        const title = title_tag.replace(/[^a-zA-Z-s]/g, "").toLowerCase();
-        try{
-            const videosFromTag = await Tag.query().where('slug', title).preload('videos')
-            if(videosFromTag.length < 0) return response.send('There is no video related to that tag on database');
-            
-            return response.status(200).send(videosFromTag[0].videos);
-        }catch(err){
-            console.error(err)
-            return response.status(500).send({error:true, message:'something went wrong'})
-        }
+  public async show({ params, response }: HttpContextContract) {
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    const { title_tag } = params
+    const title = title_tag.replace(/[^a-zA-Z-s]/g, '').toLowerCase()
+    try {
+      const videosFromTag = await Tag.query().where('slug', title).preload('videos')
+      if (videosFromTag.length < 0)
+        return response.send('There is no video related to that tag on database')
+
+      return response.status(200).send(videosFromTag[0].videos)
+    } catch (err) {
+      console.error(err)
+      return response.status(500).send({ error: true, message: 'something went wrong' })
     }
+  }
 
-    public async store({response, request, auth}:HttpContextContract) {
-        const {title} = request.body()
-        
-        if (title.lenght > 360) return response.status(403).send({error: true, message: 'title too long'})
+  public async store({ response, request, auth }: HttpContextContract) {
+    const { title } = request.body()
 
-        try{
-            const tags = await Tag.create({title:title, userId: auth!.user!.id})
+    if (title.lenght > 360)
+      return response.status(403).send({ error: true, message: 'title too long' })
 
-            return response.status(201).send(tags)
-        }catch(err) {
-            console.error(err)
-            return response.status(500).send({error:true, message:'something went wrong'})
-        }
+    try {
+      const tags = await Tag.create({ title: title, userId: auth!.user!.id })
+
+      return response.status(201).send(tags)
+    } catch (err) {
+      console.error(err)
+      return response.status(500).send({ error: true, message: 'something went wrong' })
     }
+  }
 
-    public async update({response, request, params}:HttpContextContract) {
-        const updateTag = request.body()
-        const tagId = params
-        if (updateTag.title.lenght > 360) return response.status(403).send({error: true, message: 'title too long'})
-        
-        try{
-            const tag = await Tag.findOrFail(tagId.id);
-            await tag.merge({title: updateTag.title}).save()
+  public async update({ response, request, params }: HttpContextContract) {
+    const updateTag = request.body()
+    const tagId = params
+    if (updateTag.title.lenght > 360)
+      return response.status(403).send({ error: true, message: 'title too long' })
 
-            return response.status(200).send(tag)
-        }catch(err) {
-            console.error(err)
-            return response.status(500).send({error:true, message:'something went wrong'})
-        }
+    try {
+      const tag = await Tag.findOrFail(tagId.id)
+      await tag.merge({ title: updateTag.title }).save()
+
+      return response.status(200).send(tag)
+    } catch (err) {
+      console.error(err)
+      return response.status(500).send({ error: true, message: 'something went wrong' })
     }
+  }
 
-    public async destroy({response, params}: HttpContextContract) {
-        const { id } = params
+  public async destroy({ response, params }: HttpContextContract) {
+    const { id } = params
 
-        try{
-            const tag = await Tag.findOrFail(id);
-            await tag.delete();
+    try {
+      const tag = await Tag.findOrFail(id)
+      await tag.delete()
 
-            return response.status(200).send({
-                deleted: tag.$isDeleted, 
-                message: `tag from id ${tag.id} was deleted`
-            })
-        }catch(err){
-            console.error(err)
-            return response.status(500).send({error: 'somenthing went wrong'}) 
-        }
+      return response.status(200).send({
+        deleted: tag.$isDeleted,
+        message: `tag from id ${tag.id} was deleted`,
+      })
+    } catch (err) {
+      console.error(err)
+      return response.status(500).send({ error: 'somenthing went wrong' })
     }
+  }
 }

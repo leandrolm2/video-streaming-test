@@ -64,7 +64,7 @@ const authConfig: AuthConfig = {
         | Name of the driver
         |
         */
-        driver: 'database',
+        driver: 'lucid',
 
         /*
         |--------------------------------------------------------------------------
@@ -98,7 +98,7 @@ const authConfig: AuthConfig = {
         | field and `remember_me_token` column.
         |
         */
-        usersTable: 'users',
+        model: () => import('App/Models/User'),
       },
     },
   },
